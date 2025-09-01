@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Goa Dream Trip Planner • Fancy Comprehensive Version</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html{box-sizing:border-box;}
+        *,*:before,*:after{box-sizing:inherit;}
+        body{font-family:'Segoe UI',Arial,sans-serif; background:linear-gradient(135deg,#f5fbfd 60%,#d4eaff 100%);margin:0;padding:0;color:#263850;min-height:100vh;}
+        .site-container{max-width:1260px;margin:1em auto 4em;background:#fff;border-radius:35px;box-shadow:0 8px 40px #8ad2e333;padding:2.7em 2.3em 2em;position:relative;}
+        h1{color:#ff7262;text-shadow:0 4px 22px #ffe6de44;font-size:2.18em;}
+        h2{color:#24a19c;margin-top:1.4em;}
+        h2 .emoji{font-size:1.1em;}
+        .wavediv{background:linear-gradient(100deg,#dff3ff 60%,#bdf6e9 100%);margin:2em -2.4em 3em -2.4em;height:35px;border-radius:37px 37px 20px 20px;}
+        nav.tabs{position:sticky;top:0;z-index:9;display:flex;background:linear-gradient(to right,#42c6e7 4%,#ffb47b 80%);border-radius:16px 16px 0 0;box-shadow:0 7px 32px #e3992935;margin-bottom:1.5em;overflow-x:auto;}
+        nav.tabs button{background:none;border:none;font-weight:700;
+            color:#fff;text-shadow:0 2px 16px #1991b220;
+            padding:.99em 2em;cursor:pointer;font-size:1.07em;transition:background .22s;}
+        nav.tabs button.selected{background:#fff;color:#24a19c;text-shadow:none;border-radius: 0 0 0 0;}
+        section.page{display:none;}
+        section.page.active{display:block;animation:fadein 0.28s;}
+        @keyframes fadein{from{opacity:0;}to{opacity:1;}}
+        .fancy-table{background:linear-gradient(94deg,#e8f9ff 75%,#e2ffe5 100%);border-radius:20px;border-collapse:separate;border-spacing:0;width:100%;box-shadow:0 2px 30px #7cf2d333;}
+        .fancy-table th{background:#ffbd75;color:#155273;padding:1em 0.6em;font-size:1.05em;border:none;}
+        .fancy-table td{background:#fff;font-size:1em;padding:1.08em 0.62em;border-bottom:1px solid #d8f4ee;}
+        .fancy-table tr:last-child td{border-bottom:none;}
+        .tm{font-weight:700;text-align:center!important;}
+        .tip{color:#ff8d32;font-size:.97em;}
+        a, a:visited{color:#24a19c;text-decoration:underline;}
+        .bigcard{background:linear-gradient(90deg,#fbfafd 68%,#e2f2ff 100%);border-radius:1.6em;box-shadow:0 2px 22px #87ec9c18;padding:1.8em 1.1em;margin-bottom:2em;}
+        .prop-card,.attr-card,.food-card,.activity-block{background:linear-gradient(90deg,#f7fff6 40%,#e8f9ff 100%);border-radius:16px;box-shadow:0 2px 16px #9bd27422;padding:1.35em;margin-bottom:1.3em;}
+        .prop-card h4,.food-card h4{margin:.25em 0 0.17em 0;}
+        /* Checklists and expense */
+        .check-list-block{background:linear-gradient(90deg,#f7ffee 70%,#ffe9e3 100%);border-radius:16px;padding:1.1em 1.4em;}
+        .check-list-block input[type="checkbox"]{accent-color:#24a19c;margin-right:7px;}
+        .check-list-block .done{color:#70b031;text-decoration:line-through;}
+        .exp-card{background:linear-gradient(90deg,#fff8df 60%,#c6efce 100%);padding:2em 1.2em 1.6em 1.4em;border-radius:20px;box-shadow:0 2px 22px #bde5ca19;}
+        .expense-table th{background:#ffbc69;color:#136e54;}
+        .expense-table td{background:#fff;}
+        .exp-total-row td{font-weight:700;color:#ff7262;}
+        /* Calendar */
+        .calendar-table th{background:#26b5dc;color:#fff;}
+        .calendar-table td{background:#fff;}
+        .calendar-table{background:linear-gradient(94deg,#daf4ff 60%,#f7ffe6 100%);margin:1em 0;}
+        /* Attr/Activity */
+        .attr-list ul{margin:0 0 0 2em;}
+        /* Emergency */
+        .helpline-block{background:#fff8fb;border-radius:25px;padding:2em 1em 1.7em 1.2em;box-shadow:0 2px 18px #ffb7e522;max-width:560px;margin:auto;}
+        .helpline-block b{color:#e52347;font-weight:800;}
+        .helpline-block a{font-weight:650;font-size:1.12em;}
+        .copyright{ color:#9a90ed;padding-top:1.4em;text-align:center; margin-bottom:-0.8em;font-size:1em;}
+        /* Fancy hover styles */
+        nav.tabs button:not(.selected):hover{background:rgba(255,255,255,.09);}
+        .bigcard:hover,.prop-card:hover,.activity-block:hover{box-shadow:0 12px 62px #d2ffae25;}
+        /* Responsive */
+        @media(max-width:900px){.site-container{padding:0.5em 0.09em;}.fancy-table td,.fancy-table th{font-size:0.92em;}}
+        @media(max-width:600px){.site-container{padding:0.11em; nav.tabs button{ font-size:.87em;}}}
+    </style>
+</head>
+<body>
+<div class="site-container">
+    <h1>🌴 Goa Dream Trip Planner <span style="color:#24a19c;font-size:.54em;">Sep 26 – Oct 8, 2025</span></h1>
+    <nav class="tabs" id="tabNav">
+        <button class="selected" onclick="showTab(0)">📆 Itinerary</button>
+        <button onclick="showTab(1)">🏨 Stay</button>
+        <button onclick="showTab(2)">🍽️ Food</button>
+        <button onclick="showTab(3)">🏞️ Attractions</button>
+        <button onclick="showTab(4)">💑 Romantic</button>
+        <button onclick="showTab(5)">💦 Waterfalls</button>
+        <button onclick="showTab(6)">🚴 Adventures & Offbeat</button>
+        <button onclick="showTab(7)">👥 Group Tours</button>
+        <button onclick="showTab(8)">📆 Calendar</button>
+        <button onclick="showTab(9)">✅ Packing/Booking</button>
+        <button onclick="showTab(10)">💰 Expenses</button>
+        <button onclick="showTab(11)">🆘 Emergency</button>
+    </nav>
+    <div class="wavediv"></div>
+
+    <!-- 0: Detailed itinerary tab as fancy table -->
+    <section class="page active">
+      <h2><span class="emoji">📆</span> Daily Plan — Goa Dream Trip</h2>
+      <table class="fancy-table">
+        <thead>
+          <tr>
+            <th>Day/Date</th><th>Time</th><th>Plan/Activity</th><th>Location & Google Maps</th><th>Tip/Links</th>
+          </tr>
+        </thead>
+        <tbody>
+<!-- sample first day -->
+<tr>
+<td class="tm">Fri, Sep 26<br>Arrive Goa</td>
+<td>2:00–6:30 AM</td>
+<td>Arrive at <b>MOPA Airport</b>, transfer & check-in hotel/hostel</td>
+<td><a href="https://maps.app.goo.gl/JoszY82Qvt9BjFw67" target="_blank">MOPA Airport</a> <br> <a href="https://zostel.com/hostels/india/goa/" target="_blank">Zostel Anjuna</a></td>
+<td>Book airport pickup (Gearz scooter/GoaMiles)</td>
+</tr>
+<tr>
+<td class="tm"></td>
+<td>7:00–9:00 AM</td>
+<td>Relax, breakfast at hostel</td>
+<td>&mdash;</td>
+<td>Try hostel free breakfast — ask for upma/poha</td>
+</tr>
+<tr>
+<td rowspan="2" class="tm">Sat, Sep 27</td>
+<td>8:30–10:00 AM</td>
+<td>Yoga at <b>Bean Me Up</b></td>
+<td><a href="https://maps.app.goo.gl/BzZXB6283oRxEp1u5" target="_blank">Bean Me Up, Anjuna</a></td>
+<td class="tip">Drop in, mats provided; post-yoga try their Buddha Bowl</td>
+</tr>
+<tr>
+<td>10:30 AM–2:00 PM</td>
+<td>Beach hop: Anjuna, Vagator, Morjim</td>
+<td>
+  <a href="https://maps.app.goo.gl/FHDcG1KQhozQBT8n6" target="_blank">Anjuna Beach</a> /
+  <a href="https://maps.app.goo.gl/mEiHKK3emocBw8qk7" target="_blank">Vagator</a> /
+  <a href="https://maps.app.goo.gl/ckqwFHt9FVvxuFcN7" target="_blank">Morjim</a>
+</td>
+<td class="tip">Rent a scooter. Sunscreen, keep cash for beach shacks</td>
+</tr>
+<tr>
+<td class="tm"></td>
+<td>4:00–6:30 PM</td>
+<td>Chapora Fort hike & sunset</td>
+<td><a href="https://maps.app.goo.gl/YeMWQ7oeezRes5tr6" target="_blank">Chapora Fort</a></td>
+<td>Wear shoes, best photo light! Only ₹20 entry</td>
+</tr>
+<tr>
+<td class="tm"></td>
+<td>8:30–11:00 PM</td>
+<td>Beach party/nightlife hub (LPK, Club Cubana or Tito’s Lane)</td>
+<td><a href="https://goo.gl/maps/Y1EtTBNsGeNm69kd7" target="_blank">LPK Waterfront</a></td>
+<td>Entry ₹700/pp, prebook for table at Cubana</td>
+</tr>
+<tr>
+<td class="tm">Sun, Sep 28</td>
+<td>10:00 AM–2:00 PM</td>
+<td>Wander <b>Anjuna Flea Market</b> & local cafes</td>
+<td><a href="https://maps.app.goo.gl/1og8JsEc19GLNbpY9" target="_blank">Anjuna Market</a></td>
+<td>Bargain for souvenirs. Try <a href="https://maps.app.goo.gl/BzZXB6283oRxEp1u5" target="_blank">Bean Me Up</a> for lunch
+</td>
+</tr>
+<tr>
+<td class="tm"></td>
+<td>4:00 PM–7:00 PM</td>
+<td>Relax at <a href="https://artjuna.com/" target="_blank">Artjuna Café</a> (smoothies, WiFi, outdoor)</td>
+<td><a href="https://maps.app.goo.gl/J1GrSy645VmWp3wm8" target="_blank">Artjuna, Anjuna</a></td>
+<td>End with evening beach walk</td>
+</tr>
+<!-- Add other days (copy last block as pattern, fill with all desired details and links) -->
+<tr>
+<td class="tm" rowspan="2">Mon-Thu, Sep 29–Oct 3<br>(S Goa)</td>
+<td>10:00 AM</td>
+<td>Check-out North, ride south: Palolem/Agonda</td>
+<td>
+  <a href="https://maps.app.goo.gl/zXJ8iQBQhVYeAJmJ9" target="_blank">Palolem Beach</a> /
+  <a href="https://maps.app.goo.gl/uvwUCGQu8Ko8EuqQ7" target="_blank">Agonda Beach</a>
+</td>
+<td>Stop for brunch on the way. Watch for highway road signs</td>
+</tr>
+<tr>
+<td>3:00 PM–6:30 PM</td>
+<td>Check-in, beach walk, sunset yoga</td>
+<td><a href="https://www.zestcafe.in/" target="_blank">Zest Café, Palolem</a></td>
+<td>Free yoga mats at <a href="https://www.zestcafe.in/" target="_blank">Zest</a></td>
+</tr>
+<tr>
+<td class="tm">Fri-Sat, Oct 4-5</td>
+<td>All day</td>
+<td>Waterfall trek<br>Dudhsagar <a href="https://g.page/dudhsagar-falls-goa?share" target="_blank">[Map]</a> (book taxi/Jeep tour, swim);<br>kayaking (Palolem/Cola)</td>
+<td>
+  <a href="https://www.viator.com/tours/Goa/Dudhsagar-Waterfall-Day-Trip/d4591-436889P17" target="_blank">Tour</a><br>
+  <a href="https://www.kayakgoa.com/" target="_blank">KayakPalolem</a>
+</td>
+<td>Start trek early; call ahead for Jeep spot.<br> Kayaks ₹400/hr.</td>
+</tr>
+<tr>
+<td class="tm">Sun-Tue, Oct 6-7</td>
+<td>afternoon/eve</td>
+<td>Return north Goa; market/last party<br>Pack, airport drop (MOPA)</td>
+<td><a href="https://maps.app.goo.gl/mEiHKK3emocBw8qk7" target="_blank">Vagator Market</a></td>
+<td>Double-check flight/PT transport</td>
+</tr>
+</tbody>
+      </table>
+      <div class="note">Open each link to check map or booking. Most activities adjust for weather in October; confirm local times at hostel/Goa Miles app for rides</div>
+    </section>
+
+    <section class="page">
+      <h2>🏨 Top Stays (All Links)</h2>
+      <div class="prop-card"><h4><a href="https://zostel.com/hostels/india/goa/" target="_blank">Zostel (multiple)</a></h4>
+      <div>Best for social, modern facilities; Anjuna, Calangute, Palolem.<br>Map: <a href="https://maps.app.goo.gl/BQf8MCTLKaJrkGvz9" target="_blank">Zostel Anjuna</a> — Dorm from ₹700/night | <a href="https://zostel.com/" target="_blank">Book</a></div></div>
+      <div class="prop-card"><h4><a href="https://thehosteller.com/destination/goa" target="_blank">The Hosteller</a></h4>
+      <div>Near Candolim/Verem/Colva, events & coworking. <a href="https://maps.app.goo.gl/xxDqthF6kWz9N7vG9" target="_blank">Map</a></div></div>
+      <div class="prop-card"><h4><a href="https://wokehostel.com/" target="_blank">Woke</a></h4>
+      <div>Arpora, Morjim, Palolem—chic, pool. <a href="https://maps.app.goo.gl/EDn39Sy2XAFAdpMw6" target="_blank">Woke Morjim</a></div></div>
+      <div class="prop-card"><h4><a href="https://sturmfrei.in/palolem-hostel-goa/" target="_blank">Sturmfrei Palolem</a></h4>
+      <div>Eco, forest edge, regular music/dance. <a href="https://goo.gl/maps/g24Vu7VbHjAzj1S26" target="_blank">Map</a></div></div>
+      <div class="prop-card"><h4><a href="https://www.makemytrip.com/hotels/taj_fort_aguada_resort_spa_goa-details-goa.html" target="_blank">Taj Fort Aguada Resort</a></h4>
+      <div>Luxury splurge, perfect 1-night celebration. <a href="https://maps.app.goo.gl/Wq1KmnkGVnuv5FCb7" target="_blank">Map</a></div></div>
+    </section>
+    <section class="page">
+      <h2>🍽️ Food & Cafés with Google Maps</h2>
+      <div class="food-card"><h4>North Goa</h4>
+        <ul>
+          <li><b>Bean Me Up:</b> <a href="https://beanmeup.in/" target="_blank">Site</a>, <a href="https://maps.app.goo.gl/BzZXB6283oRxEp1u5" target="_blank">Map</a></li>
+          <li><b>Artjuna:</b> <a href="https://www.artjuna.com/" target="_blank">Site</a>, <a href="https://maps.app.goo.gl/J1GrSy645VmWp3wm8" target="_blank">Map</a></li>
+          <li><b>Prana Café:</b> <a href="https://maps.app.goo.gl/bB1fg43JdxJ6dKWz6" target="_blank">Map</a></li>
+        </ul>
+      </div>
+      <div class="food-card"><h4>South Goa</h4>
+        <ul>
+          <li><b>Zest Café (Palolem):</b> <a href="https://www.zestcafe.in/" target="_blank">Site</a>, <a href="https://maps.app.goo.gl/8kbEe1RChJro5Zxt9" target="_blank">Map</a></li>
+          <li><b>Little World:</b> <a href="https://maps.app.goo.gl/uog41Q7tXCiEs1b29" target="_blank">Map</a></li>
+        </ul>
+      </div>
+      <div class="food-card"><h4>Local Must Eat (veg)</h4>
+        <ul>
+          <li><b>Poi sliders/sandwiches:</b> Try at <a href="https://maps.app.goo.gl/6zXw3Rtztx6LKZHx9" target="_blank">St. Anthony Bakery</a> (Calangute)</li>
+          <li><b>Mushroom Xacuti, Khatkhate, Bebinca:</b> Any veg thali café in <a href="https://maps.app.goo.gl/AJPecgG2oPoobjCm7" target="_blank">Mapusa</a>, <a href="https://maps.app.goo.gl/aHpWpHQuCBjTuN6a9" target="_blank">Candolim</a></li>
+        </ul>
+      </div>
+    </section>
+    <section class="page">
+      <h2>🏞️ Major Attractions (All Links)</h2>
+      <div class="attr-card">
+        <b>Chapora Fort</b> — <a href="https://maps.app.goo.gl/YeMWQ7oeezRes5tr6" target="_blank">Map</a> — Sunrise/sunset, ₹20 entry. Iconic "Dil Chahta Hai" spot.
+      </div>
+      <div class="attr-card">
+        <b>Basilica of Bom Jesus, Old Goa</b> — <a href="https://maps.app.goo.gl/TpdAHbN6xSS6QPH49" target="_blank">Map</a> — 8am–6:30pm, Free, UNESCO World Heritage.
+      </div>
+      <div class="attr-card">
+        <b>Palolem Beach</b> — <a href="https://maps.app.goo.gl/zXJ8iQBQhVYeAJmJ9" target="_blank">Map</a> — Yoga, dolphin boat rides, kayak mangroves.
+      </div>
+      <div class="attr-card">
+        <b>Saturday Night Market</b> — <a href="https://maps.app.goo.gl/6NRzcooB56GrkPgj9" target="_blank">Map</a> — Handicrafts, live bands, Sat 6pm–11pm.
+      </div>
+      <div class="attr-card">
+        <b>Dudhsagar Waterfall</b> — <a href="https://g.page/dudhsagar-falls-goa?share" target="_blank">Map</a> — Jeep, trek best, book ahead.
+      </div>
+      <div class="attr-card">
+        <b>Silent Noise Party (Palolem)</b> — <a href="https://maps.app.goo.gl/xJSfTWgzndnS6auG6" target="_blank">Map</a> — Unique DJ night, Saturday, headphones for all.
+      </div>
+    </section>
+    <section class="page">
+      <h2>💑 Romantic Spots</h2>
+      <div class="bigcard">
+        <ul>
+          <li><b>Sunset dinner at <a href="https://thalassagoa.com/" target="_blank">Thalassa</a> (<a href="https://maps.app.goo.gl/G32ixFXXQWbbp31T6" target="_blank">Map</a>):</b> Reserve window seat, arrive by 6:15pm for best sunset. Greek veg tapas, tzatziki, sea view.</li>
+          <li><b>Private kayak @ Cola/Palolem (<a href="https://maps.app.goo.gl/LEyoWVXszxW6Cwor8" target="_blank">Cola</a>):</b> Start 5pm for epic sunset, book at <a href="https://www.kayakgoa.com/" target="_blank">Kayak Goa</a>.</li>
+          <li><b>Candlelight or stargaze at <a href="https://maps.app.goo.gl/uvwUCGQu8Ko8EuqQ7" target="_blank">Agonda Beach</a>:</b> Best on new moon for Milky Way views.</li>
+          <li><b>Sereno Spa (<a href="https://parkhyattgoa.in/sereno-spa-goa/" target="_blank">site</a>, <a href="https://maps.app.goo.gl/PhM67kdToWUsv8XXA" target="_blank">map</a>):</b> Couples massage, 10am–8pm. Pre-book for Oct weekends.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="page">
+      <h2>💦 Waterfalls</h2>
+      <div class="bigcard">
+        <ul>
+          <li><b>Dudhsagar Falls:</b> Late Sept–Jan, <a href="https://g.page/dudhsagar-falls-goa?share" target="_blank">Map</a>, <a href="https://www.viator.com/tours/Goa/Dudhsagar-Waterfall-Day-Trip/d4591-436889P17" target="_blank">Tour/Jeep</a>, ₹400+. Start before 7am to avoid crowds.</li>
+          <li><b>Tambdi Surla Falls:</b> <a href="https://goo.gl/maps/bJa4VBpV4xzKM7TF8" target="_blank">Map</a>, combine with temple.</li>
+          <li><b>Netravali (Savari):</b> <a href="https://goo.gl/maps/jqBskvKhb5wMT6yG8" target="_blank">Map</a>, short trek in wild South Goa.</li>
+          <li><b>Harvalem Falls:</b> <a href="https://goo.gl/maps/FktQw2LH1pFxsu5g6" target="_blank">Map</a>, gentle walking access.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="page">
+      <h2>🚴 Adventures & Offbeat</h2>
+      <div class="bigcard">
+        <ul>
+          <li><b>Divar Island cycle tour:</b> <a href="https://www.trailsofindia.in/cycling-divar-island-goa" target="_blank">info</a> <a href="https://maps.app.goo.gl/f8hzKUqtj1Tk7AZ96" target="_blank">[map]</a>, ₹200, early AM, ferry from Old Goa.</li>
+          <li><b>BLive Electric e-Bike:</b> <a href="https://blive.co.in/tours-in-goa/" target="_blank">tours</a>, Mandrem, Panjim, sunset/temple loops.</li>
+          <li><b>Surf lessons:</b> <a href="https://goasurfing.com/" target="_blank">Goa Surf School</a>; Agonda, Ashwem; ₹1300–1900.</li>
+          <li><b>Bungee Jump (Baga):</b> <a href="https://jumpingheights.com/bungee-jumping-goa/" target="_blank">Jumping Heights</a>, 9–6pm, ₹3,400+.</li>
+          <li><b>Sao Jacinto/Chorao islands:</b> <a href="https://maps.app.goo.gl/JszXPkEeECB1A5Mz6" target="_blank">Sao Jacinto</a>, <a href="https://www.goa-tourism.com/sightseeing/salim-ali-bird-sanctuary" target="_blank">Salim Ali Sanctuary</a> — birdwatching, 7–11am.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="page">
+      <h2>👥 Group Tours (Easy Booking)</h2>
+      <div class="bigcard">
+        <ul>
+          <li><b>Viator Goa:</b> <a href="https://www.viator.com/searchResults/all?text=Goa&dateFrom=2025-09-26&dateTo=2025-10-07" target="_blank">All Activities/Big Tours</a> (dolphin boating, markets, cycling, spice farms etc)</li>
+          <li><b>B:Live:</b> <a href="https://blive.co.in/tours-in-goa/" target="_blank">Electric Bike/Cycle</a> — group-friendly, daily slots</li>
+          <li><b>KayakGoa:</b> <a href="https://www.kayakgoa.com/group-booking" target="_blank">Group Tours</a> — sunrise, sunset in Palolem/Cola</li>
+        </ul>
+        <div class="note">All tours can be reserved online up to a day in advance; confirm timings as they may shift for weather in Sep/Oct.</div>
+      </div>
+    </section>
+    <section class="page">
+      <h2>📆 Editable Calendar</h2>
+      <table class="calendar-table"><thead>
+        <tr><th>Date</th><th>Area</th><th>Plan</th></tr>
+      </thead><tbody id="calTbody"></tbody></table>
+      <div class="note">Click any cell to adjust your daily plan and save.</div>
+    </section>
+    <section class="page">
+      <h2>✅ Packing & Booking Checklists</h2>
+      <div class="check-list-block" id="bookingChecklist">
+        <ul>
+          <li><input type="checkbox" data-key="flight1"><label>Flight Delhi–Goa (e-ticket saved)</label></li>
+          <li><input type="checkbox" data-key="flight2"><label>Return flight Goa–Delhi (e-ticket saved)</label></li>
+          <li><input type="checkbox" data-key="north_arr"><label>North Goa: <a href="https://zostel.com/hostels/india/goa/" target="_blank">Zostel</a>, <a href="https://thehosteller.com/destination/goa" target="_blank">The Hosteller</a></label></li>
+          <li><input type="checkbox" data-key="south"><label>South Goa: <a href="https://www.sturmfrei.in/palolem-hostel-goa/" target="_blank">Sturmfrei</a></label></li>
+          <li><input type="checkbox" data-key="north_ret"><label>North Goa (repeat, pre-departure): <a href="https://wokehostel.com/" target="_blank">Woke</a></label></li>
+          <li><input type="checkbox" data-key="lux"><label>Luxury Night: <a href="https://www.makemytrip.com/hotels/taj_fort_aguada_resort_spa_goa-details-goa.html" target="_blank">Taj Fort Aguada</a></label></li>
+          <li><input type="checkbox" data-key="scoot"><label>Scooter rental: <a href="https://gearzvehicle.com/bike-on-rent-in-goa/mopa" target="_blank">Gearz (MOPA)</a></label></li>
+          <li><input type="checkbox" data-key="insurance"><label>Travel insurance</label></li>
+        </ul>
+      </div>
+      <div class="check-list-block" id="packingChecklist">
+        <ul>
+          <li><input type="checkbox" data-key="id"><label>ID/DL/tickets (on phone + print)</label></li>
+          <li><input type="checkbox" data-key="cash"><label>Cash/card, backup online wallet, coins</label></li>
+          <li><input type="checkbox" data-key="swim"><label>Swimsuit, towel, sunglasses</label></li>
+          <li><input type="checkbox" data-key="sun"><label>Sun cap, scarf, SPF, aftersun</label></li>
+          <li><input type="checkbox" data-key="meds"><label>Personal meds, allergy slip</label></li>
+          <li><input type="checkbox" data-key="rain"><label>Raincoat (just in case)</label></li>
+          <li><input type="checkbox" data-key="gadgets"><label>Powerbank, charger, plug/adapters</label></li>
+          <li><input type="checkbox" data-key="book"><label>Travel notebook, printouts, snacks</label></li>
+        </ul>
+      </div>
+    </section>
+    <section class="page">
+      <h2>💰 Expenses — Live Calculator</h2>
+      <div class="exp-card">
+        <form id="expForm"><table class="expense-table">
+          <tr><th>Item</th><th>₹ Each</th><th>Qty</th><th>Total</th></tr>
+          <tr><td>Flight Delhi-Goa</td><td><input type="number" id="flight1" value="4100"></td><td>1</td><td id="f1"></td></tr>
+          <tr><td>Return Goa-Delhi</td><td><input type="number" id="flight2" value="5800"></td><td>1</td><td id="f2"></td></tr>
+          <tr><td>N Goa stay</td><td><input type="number" id="northStay" value="2800"></td><td>5</td><td id="nSt"></td></tr>
+          <tr><td>S Goa stay</td><td><input type="number" id="southStay" value="4000"></td><td>6</td><td id="sSt"></td></tr>
+          <tr><td>Luxury night (split)</td><td><input type="number" id="lux" value="4500"></td><td>1</td><td id="luxT"></td></tr>
+          <tr><td>Scooter</td><td><input type="number" id="scoot" value="3294"></td><td>1</td><td id="scootT"></td></tr>
+          <tr><td>Veg Meals</td><td><input type="number" id="meals" value="6000"></td><td>1</td><td id="mealsT"></td></tr>
+          <tr><td>Activity Fees</td><td><input type="number" id="tours" value="2400"></td><td>1</td><td id="toursT"></td></tr>
+          <tr><td>Misc</td><td><input type="number" id="misc" value="2000"></td><td>1</td><td id="miscT"></td></tr>
+          <tr class="exp-total-row"><td colspan="3">Total/pax:</td><td id="expTotal"></td></tr>
+          <tr class="exp-total-row"><td colspan="3">Total for <input type="number" min=1 value=2 id="groupSize" style="width:38px;">:</td><td id="expGT"></td></tr>
+        </table></form>
+      </div>
+    </section>
+    <section class="page">
+        <h2>🆘 Emergency Helplines</h2>
+        <div class="helpline-block">
+          <div><b>Police:</b> <a href="tel:100">100</a>, <a href="tel:08322221022">0832-2221022</a></div>
+          <div><b>Tourist Police:</b> <a href="tel:08322498232">0832-2498232</a></div>
+          <div><b>Ambulance:</b> <a href="tel:108">108</a>, <b>Fire:</b> <a href="tel:101">101</a></div>
+          <div><b>Coastguard:</b> <a href="tel:1554">1554</a></div>
+          <div><b>Women's:</b> <a href="tel:1091">1091</a></div>
+          <div><b>Airport:</b> <a href="tel:08322541530">0832-2541530</a>, <a href="tel:08322411302">0832-2411302</a></div>
+          <div><b>Taxi (Goa):</b> <a href="tel:155388">155388</a></div>
+          <div><b>National tourist helpline:</b> <a href="tel:1363">1363</a></div>
+        </div>
+    </section>
+    <div class="copyright">Divyanshu © 2025</div>
+</div>
+<script>
+function showTab(idx){document.querySelectorAll('.tabs button').forEach((b,i)=>b.classList.toggle('selected', idx===i));document.querySelectorAll('.page').forEach((sec,i)=>sec.classList.toggle('active', idx===i));}showTab(0);
+// Persistent checklists
+function saveChecks(id) {let items={}, cbs = document.getElementById(id).querySelectorAll('input[type="checkbox"]');cbs.forEach(cb=>items[cb.dataset.key]=cb.checked);localStorage.setItem(id,JSON.stringify(items));}
+function restoreChecks(id) {let items=JSON.parse(localStorage.getItem(id)||'{}'),cbs = document.getElementById(id).querySelectorAll('input[type="checkbox"]');cbs.forEach(cb=>{cb.checked=!!items[cb.dataset.key];cb.parentNode.classList.toggle('done',cb.checked);cb.onchange=function(){cb.parentNode.classList.toggle('done',cb.checked);saveChecks(id);};});}
+restoreChecks('bookingChecklist'); restoreChecks('packingChecklist');
+// Expense calculation
+function updateExp(){let nSt=+document.getElementById('northStay').value*5/2,sSt=+document.getElementById('southStay').value*6/2,lux=+document.getElementById('lux').value,scoot=+document.getElementById('scoot').value,meals=+document.getElementById('meals').value,tours=+document.getElementById('tours').value,misc=+document.getElementById('misc').value,f1=+document.getElementById('flight1').value,f2=+document.getElementById('flight2').value;document.getElementById('nSt').innerText=nSt;document.getElementById('sSt').innerText=sSt;document.getElementById('luxT').innerText=lux;document.getElementById('scootT').innerText=scoot;document.getElementById('mealsT').innerText=meals;document.getElementById('toursT').innerText=tours;document.getElementById('miscT').innerText=misc;document.getElementById('f1').innerText=f1;document.getElementById('f2').innerText=f2;let perP=nSt+sSt+lux+scoot+meals+tours+misc+f1+f2;document.getElementById('expTotal').innerText=Math.round(perP);let persons=+document.getElementById('groupSize').value;document.getElementById('expGT').innerText=Math.round(perP*persons);}
+document.getElementById('expForm').oninput=updateExp;updateExp();
+// Calendar
+let calData = [["Sep 26 (Fri)","N Goa","Land, checkin, rest"],["Sep 27","N Goa","Yoga, Anjuna, party"],["Sep 28","N Goa","Market, beach, café"],["Sep 29","S Goa","Palolem, beach, yoga"],["Sep 30","S Goa","Kayak, hike, chill"],["Oct 1","S Goa","Hike, yoga, thali"],["Oct 2","S Goa","Live gig, beach café"],["Oct 3","S Goa","Cotigao, veg shack"],["Oct 4","N Goa","Return north, market"],["Oct 5","N Goa","Café crawl, party"],["Oct 6","N Goa","Beach, pack"],["Oct 7","N Goa","Airport, early night"],["Oct 8","--","Flight home"]];
+function showCal(){let t=document.getElementById('calTbody'),s="";t.innerHTML='';for(let i=0;i<calData.length;i++){s+=`<tr><td contenteditable="true" oninput="calData[${i}][0]=this.innerText">${calData[i][0]}</td><td contenteditable="true" oninput="calData[${i}][1]=this.innerText">${calData[i][1]}</td><td contenteditable="true" oninput="calData[${i}][2]=this.innerText">${calData[i][2]}</td></tr>`;}t.innerHTML=s;}
+showCal();
+</script>
+</body>
+</html>
